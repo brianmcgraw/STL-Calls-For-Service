@@ -1,0 +1,19 @@
+version: "3"
+services:
+  cfs_pg_db:
+    build:
+      context: ./
+      dockerfile: pg/Dockerfile
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+  cfs_mock_html:
+    build:
+      context: ./
+      dockerfile: mock-cfs-site/Dockerfile
+    ports:
+      - "9000:80"
+
+  
+        

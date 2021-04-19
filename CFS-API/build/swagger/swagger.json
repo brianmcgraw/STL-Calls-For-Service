@@ -1,0 +1,240 @@
+{
+  "swagger": "2.0",
+  "info": {},
+  "paths": {
+    "/api/cfs": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "cfs"
+        ],
+        "summary": "Returns calls for service. Defaults to the 100 most recent calls.",
+        "operationId": "getCFS",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "StartDate",
+            "description": "The starting cutoff for your query. Defaults to 24 hours prior to the current time. Expressed as ISO 8601 string.\n\nin: request parameter",
+            "name": "startDate",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "x-go-name": "EndDate",
+            "description": "The end date cutoff for your query. Defaults to the current time. Expressed as ISO 8601 string.\n\nin: request parameter",
+            "name": "endDate",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "x-go-name": "Ward",
+            "description": "Limits your query to calls within a specific ward. Must be an integer between 1 and 28.\n\nin: request parameter",
+            "name": "ward",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "x-go-name": "Neighborhood",
+            "description": "Limits your query to calls within a neighborhood.\nList of neighborhoods: https://github.com/slu-openGIS/STL_BOUNDARY_Nhood/tree/master/data\nin: request parameter",
+            "name": "neighborhood",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "x-go-name": "Description",
+            "description": "Limits your query to a given call description.\nTODO --- map description to a description code.\nin: request parameter",
+            "name": "description",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "Offset",
+            "description": "Used in paginating requests. An offset of 10 would skip the first 10 results. Defaults to zero.\n\nin: request parameter",
+            "name": "offset",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "Limit",
+            "description": "Limits the number of calls returned. Default is 100. Maximum is 500.\n\nin: request parameter",
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "cfs",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/cfs"
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/responses/ErrorResponse"
+          },
+          "403": {
+            "$ref": "#/responses/ErrorResponse"
+          },
+          "404": {
+            "$ref": "#/responses/ErrorResponse"
+          }
+        }
+      }
+    },
+    "/api/info": {
+      "get": {
+        "description": "Lists information about the state of the api",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "info"
+        ],
+        "operationId": "listInfo",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/info"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Meta": {
+      "type": "object",
+      "properties": {
+        "next": {
+          "type": "string",
+          "x-go-name": "Next"
+        },
+        "offset": {
+          "type": "string",
+          "x-go-name": "Offset"
+        },
+        "pageNumber": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "PageNumber"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "PageSize"
+        },
+        "prev": {
+          "type": "string",
+          "x-go-name": "Prev"
+        },
+        "totalRecords": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "TotalRecords"
+        }
+      },
+      "x-go-package": "CallsForService/CFS-API/pkg/cfs"
+    },
+    "cfs": {
+      "type": "object",
+      "title": "A call for service represents information about a call made requesting service.",
+      "properties": {
+        "Id": {
+          "description": "The identification of the call.",
+          "type": "string"
+        },
+        "description": {
+          "type": "string",
+          "x-go-name": "Description"
+        },
+        "eventTime": {
+          "type": "string",
+          "format": "date-time",
+          "x-go-name": "EventTime"
+        },
+        "latitude": {
+          "type": "number",
+          "format": "double",
+          "x-go-name": "Lat"
+        },
+        "location": {
+          "type": "string",
+          "x-go-name": "Location"
+        },
+        "longitude": {
+          "type": "number",
+          "format": "double",
+          "x-go-name": "Lng"
+        },
+        "neighborhood": {
+          "type": "string",
+          "x-go-name": "Neighborhood"
+        },
+        "ward": {
+          "type": "string",
+          "x-go-name": "Ward"
+        }
+      },
+      "x-go-name": "CallForService",
+      "x-go-package": "CallsForService/CFS-API/pkg/cfs"
+    },
+    "info": {
+      "type": "object",
+      "title": "Info represents the current state of the API.",
+      "properties": {
+        "buildTime": {
+          "type": "string",
+          "x-go-name": "BuildTime"
+        },
+        "commitHash": {
+          "type": "string",
+          "x-go-name": "CommitHash"
+        },
+        "user": {
+          "type": "string",
+          "x-go-name": "BuildUser"
+        }
+      },
+      "x-go-name": "BuildInfo",
+      "x-go-package": "CallsForService/CFS-API/pkg/config"
+    }
+  },
+  "responses": {
+    "ErrorResponse": {
+      "description": "",
+      "headers": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "getCFS": {
+      "description": "",
+      "schema": {
+        "$ref": "#/definitions/Meta"
+      },
+      "headers": {
+        "cfs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cfs"
+          }
+        },
+        "meta": {}
+      }
+    },
+    "info": {
+      "description": "",
+      "schema": {
+        "$ref": "#/definitions/info"
+      },
+      "headers": {
+        "buildInfo": {}
+      }
+    }
+  }
+}

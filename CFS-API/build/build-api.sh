@@ -1,0 +1,1 @@
+docker build -t cfs-api --rm -f ./CFS-API/build/Dockerfile --build-arg BUILD_COMMIT_SHA=$(git rev-parse HEAD) --build-arg BUILD_USER=$(git config --global user.email) --build-arg BUILD_TIME="$(date '+%Y-%m-%d %H:%M:%S')" .

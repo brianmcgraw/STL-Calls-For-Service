@@ -1,0 +1,8 @@
+{
+    "/api/*": {
+      "target": "https://brains-sandbox.dev",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true
+    }
+  }

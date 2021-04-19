@@ -1,0 +1,37 @@
+version: "3"
+services:
+  cfs_pg_db:
+    build:
+      context: ./
+      dockerfile: pg/Dockerfile
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/data
+  cfs_api:
+    build:
+      context: ../../../
+      dockerfile: CFS-API/build/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - cfs_pg_db
+    environment:
+      HOST_ENV: dev
+      PW_ENV: local
+      DB_ENV: cfs
+      POSTGRES_PORT_ENV: 5432
+      USER_ENV: postgres
+      API_PORT_ENV: 8000
+      HOST_ENV: cfs_pg_db
+  # cfs_web:
+  #   build:
+  #     context: ../../CFS-Web
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "9000:80"
+  #   depends_on:
+  #     - cfs_api
+        

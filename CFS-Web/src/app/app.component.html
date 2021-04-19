@@ -1,0 +1,31 @@
+<div *ngIf="apiLoaded | async">
+<google-map
+  height="500px"
+  width="100%"
+  [zoom]="zoom"
+  [center]="center"
+  [options]="options"
+>
+
+<map-marker #marker="mapMarker"
+*ngFor="let markerPosition of (markers$ | async); let i = index;"
+[position]="markerPosition.LatLng"
+(mapMouseover)="openInfoWindow(marker, i)"
+(mapMouseout)="closeInfoWindow(marker, i)"
+>
+
+<map-info-window
+[options]="infoWindowOptions"
+>
+  {{ markerPosition.Id }} : {{ markerPosition.Description }}
+  <br>
+  {{ markerPosition.EventTime | date: 'short' }}
+  <br>
+  Ward: {{ markerPosition.Ward }}
+  <br>
+  Neighborhood: {{ markerPosition.Neighborhood }}
+
+</map-info-window>
+</map-marker>
+</google-map>
+</div>
